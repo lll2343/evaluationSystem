@@ -23,18 +23,10 @@ export default {
     };
   },
   methods: {
-    login: function () {
-      this.axios
-        .get("http://127.0.0.1:5000/login")
-        .then((res) => {
-          console.log("res", res);
-          console.log(res.data);
-        })
-        .catch((err) => {
-          console.log("err", err);
-        });
-    },
   },
+  mounted: function() {
+    
+  }
 };
 </script>
 

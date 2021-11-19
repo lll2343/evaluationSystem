@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import ass01 from "./GBA/ass01.vue";
+import ass01 from "../GBA/ass01.vue";
 
 export default {
   name: "evaluation",
@@ -25,12 +25,17 @@ export default {
         pos: 0
     };
   },
+
+  components: { ass01 },
+  
   methods: {
     nextAss: function(){
       this.pos = this.pos+1;
     }
   },
-  components: { ass01 },
+  mounted: function(){
+
+  },
 };
 </script>
 

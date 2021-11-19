@@ -6,11 +6,7 @@ var logger = require('morgan');
 const cors = require('cors');
 var session = require("express-session");
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
 var app = express();
-
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -21,15 +17,42 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(session({
-  secret: 'keyboard cat',
-  resave: true,
-  saveUninitialized: true
+  secret:"chh",
+  cookie:{
+      maxAge:60*1000*30,
+      secure:false
+  },
+  resave:false,//及时session没有被修改，也保存session的值
+  saveUninitialized:false //无论有没有session cookie ，每次请求都设置个session cookie
 }))
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
+  res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+  res.header("ACCESS-Control-Allow-Headers", "Content-Type");
+  //  允许客户端发送跨域请求时携带cookie信息 这个很重要
+  res.header('Access-Control-Allow-Credentials', 'true');
+  next()
+})
+
+
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(cors())
+
+// const corsOptions = {
+//   origin: 'http://localhost:8080',
+//   credentials: true
+// }
+
+// // 解决跨域问题
+// app.use(cors(corsOptions));
+app.use(express.static(path.join(__dirname, 'dist')));
+
+var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/users');
+var testRouter = require('./routes/testuser')
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/test',testRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -63,6 +63,7 @@
 <script>
 export default {
   name: "login",
+
   data() {
     return {
       isReg: false,
@@ -76,10 +77,26 @@ export default {
         pwd: "",
         spwd: "", // 密码输两次进行验证
       },
-      url: "http://localhost:3000/",
+      url: this.Common.url,
     };
   },
+
+  mounted: function(){
+     if(this.Common.islogin) {
+      this.open1("错误", "你已登录");
+      this.$router.push({ path: "/" });
+     }
+  },
+
   methods: {
+    open1:function(msg, type) {
+      this.$message({
+        showClose: true,
+        message: msg,
+        type: type,
+      });
+    },
+
     // 在注册和登录之间进行切换
     changeLogin: function () {
       this.isReg = !this.isReg;
@@ -92,7 +109,7 @@ export default {
       } else if (this.loginUser.pwd == "") {
         this.open1("您还没有输入密码", "error");
       } else {
-        this.axios
+        this.$axios
           .post(this.url + "users/login", {
             mail: this.loginUser.mail,
             pwd: this.loginUser.pwd,
@@ -101,10 +118,7 @@ export default {
             console.log(response.data);
             this.open1(response.data.msg, response.data.type);
             if(response.data.type=='success'){
-              this.$router.push({ 
-                name: "Index" ,
-                params: {islogin:true}}
-              );
+              this.$router.push({ path: "/" });
             }
           })
           .catch((err) => {
@@ -123,7 +137,7 @@ export default {
       } else if (this.regUser.pwd != this.regUser.spwd) {
         this.open1("两次密码输入不统一", "error");
       } else {
-        this.axios
+        this.$axios
           .post(this.url + "users/reg", {
             mail: this.regUser.mail,
             code: this.regUser.code,
@@ -143,22 +157,13 @@ export default {
           });
       }
     },
-
-    // 消息弹窗
-    open1(msg, type) {
-      this.$message({
-        showClose: true,
-        message: msg,
-        type: type,
-      });
-    },
     // 邮箱发送验证码
     postCheckCode: function () {
       if (this.regUser.mail == "") {
         this.open1("您还没有输入邮箱号码", "error");
       } else {
         this.open1('您已成功发送，这可能会花费几分钟时间','success')
-        this.axios.post(this.url + "users/email",{
+        this.$axios.post(this.url + "users/email",{
           mail: this.regUser.mail
         })
           .then((response)=>{
@@ -172,20 +177,6 @@ export default {
           })
       }
     },
-  },
-  mounted: function(){
-     this.axios
-          .post(this.url + "users/checklogin")
-          .then((respones)=>{
-            if(respones.data.islogin){
-              this.open1('您已登录',"error")
-              // 返回首页
-              this.$router.push({ path: "/" });
-            }
-          })
-          .catch((err)=>{
-            this.open1("错误", "error");
-          })
   }
 };
 </script>

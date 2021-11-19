@@ -12,13 +12,15 @@ Vue.use(ElementUI)
 import less from 'less'
 Vue.use(less)
 
-import axios from 'axios'
-// axios.defaults.withCredentials=true;
-import VueAxios from 'vue-axios'
-Vue.use(VueAxios, axios)
-
-
 Vue.config.productionTip = false
+
+import Common from '@/components/common/common'
+Vue.prototype.Common = Common;
+
+import axios from 'axios'
+//允许跨域请求携带用户凭证cookies 否则session不起作用
+axios.defaults.withCredentials = true;//位置必须要在添加到vue原型对象的前面
+Vue.prototype.$axios = axios
 
 /* eslint-disable no-new */
 new Vue({

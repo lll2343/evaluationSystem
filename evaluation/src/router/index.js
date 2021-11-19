@@ -1,10 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+
 import Index from '@/components/index'
-import Login from '@/components/login'
+
 import nofound from '@/components/404/404page'
-import evaluation from '@/components/evaluation'
-import personal from '@/components/personal'
+
+import Login from '@/components/menu/login'
+import evaluation from '@/components/menu/evaluation'
+import personal from '@/components/menu/personal'
 
 Vue.use(Router)
 

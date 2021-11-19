@@ -18,6 +18,22 @@ const Query = async (sql) => {
     })
 }
 
+/**
+ * @function QueryOne DQL 查询一条记录
+ * @param {String} sql 
+ * @returns {JSON} 查询结果
+ */
+const QueryOne = async (sql) => {
+    return new Promise(async (resolve,reject) => {
+        db.get(sql, async (err,result)=>{
+            if(err){
+                reject(err)
+            } else {
+                resolve(result)
+            }
+        })
+    })
+}
 
 /** 
  * @function Run  执行DDL和DML语句 如建表、删表、增加/删除行数据
@@ -37,5 +53,6 @@ const Run = async (sql) => {
 
 module.exports = {
     Query,
-    Run
+    Run,
+    QueryOne
 }

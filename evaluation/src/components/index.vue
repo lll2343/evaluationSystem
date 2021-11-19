@@ -10,6 +10,8 @@
         <router-link to="#">联系我们</router-link>
         <router-link to="#">关于我们</router-link>
       </div>
+
+      <!-- 登录注册与已登录 -->
       <div class="login">
         <div class="haslogin btn" v-if="haslogin == false" @click="toLoginpage">
           登录 | 注册
@@ -25,7 +27,7 @@
                   ></el-avatar>
                 </div>
                 <div class="nickname">
-                  {{ nickname }}
+                  {{ mail }}
                 </div>
                 <div><i class="el-icon-arrow-down el-icon--right"></i></div>
               </div>
@@ -38,6 +40,8 @@
         </div>
       </div>
     </div>
+
+    <!-- 首页，图片加介绍 -->
     <div class="body">
       <div class="body-desc">
         <div class="body-desc-title">Evaluation System for The Youth</div>
@@ -57,51 +61,63 @@
 <script>
 export default {
   name: "index",
+
   data: function () {
     return {
       src: "./../../static/Mask_Group_1.png",
       haslogin: false,
-      nickname: "lyz",
-      url: "http://localhost:3000/",
+      mail: "",
+      url: this.Common.url,
     };
   },
+
+  mounted: function () {
+    this.$axios
+      .post(this.url + "users/checklogin")
+      .then((response) => {
+        console.log('检查登录')
+        console.log(response.data);
+        console.log('islogin',response.data.islogin)
+        if (response.data.islogin == true) {
+          console.log('12')
+          this.haslogin = true;
+          this.mail = response.data.mail.slice(0,4);
+          console.log(this.haslogin,this.mail)
+        }
+      })
+      .catch((err) => {
+        this.open1("错误，请重试", "error");
+      });
+  },
+
   methods: {
+    open1:function (msg, type) {
+      this.$message({
+        showClose: true,
+        message: msg,
+        type: type,
+      });
+    },
+
     toLoginpage: function () {
       this.$router.push({ path: "/login" });
     },
     handleLoginCommand: function (command) {
-      console.log(command);
       if (command == "loginout") {
-        this.axios
-          .post(this.url + "users/checklogin")
+        this.$axios
+          .post(this.url + "users/loginout")
           .then((response) => {
-            this.$message("退出登录");
-            this.haslogin = false;
+            console.log(response.data);
+            this.open1(response.data.msg,response.data.type)
+            this.haslogin= false
           })
-          .catch((err)=>{
-            this.$message("错误");
+          .catch((err) => {
+            this.open1("错误，请重试", "error");
           });
       } else {
         this.$router.push({ path: "/personal" });
       }
     },
-  },
-  mounted: function () {
-      console.log(this.$route.params.islogin)
-     if(this.$route.params.islogin){
-       this.haslogin = true
-     }
-     // 此时应该请求确认目前是否已经登录
-     this.axios
-          .post(this.url + "users/checklogin")
-          .then((respones)=>{
-            if(! respones.data.islogin){
-              this.open1('尚未登录',"error")
-            }
-          })
-          .catch((err)=>{
-            this.open1("错误", "error");
-          })
   },
 };
 </script>
