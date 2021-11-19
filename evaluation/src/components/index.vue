@@ -60,8 +60,9 @@ export default {
   data: function () {
     return {
       src: "./../../static/Mask_Group_1.png",
-      haslogin: true,
+      haslogin: false,
       nickname: "lyz",
+      url: "http://localhost:3000/",
     };
   },
   methods: {
@@ -71,17 +72,37 @@ export default {
     handleLoginCommand: function (command) {
       console.log(command);
       if (command == "loginout") {
-        this.$message("退出登录");
-        this.haslogin = false;
-        this.$router.push({ path: "/" });
+        this.axios
+          .post(this.url + "users/checklogin")
+          .then((response) => {
+            this.$message("退出登录");
+            this.haslogin = false;
+          })
+          .catch((err)=>{
+            this.$message("错误");
+          });
       } else {
         this.$router.push({ path: "/personal" });
       }
     },
   },
-  mounted: function(){
-    // 此时应该请求确认目前是否已经登录
-  }
+  mounted: function () {
+      console.log(this.$route.params.islogin)
+     if(this.$route.params.islogin){
+       this.haslogin = true
+     }
+     // 此时应该请求确认目前是否已经登录
+     this.axios
+          .post(this.url + "users/checklogin")
+          .then((respones)=>{
+            if(! respones.data.islogin){
+              this.open1('尚未登录',"error")
+            }
+          })
+          .catch((err)=>{
+            this.open1("错误", "error");
+          })
+  },
 };
 </script>
 

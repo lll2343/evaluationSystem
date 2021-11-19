@@ -13,8 +13,10 @@ import less from 'less'
 Vue.use(less)
 
 import axios from 'axios'
+// axios.defaults.withCredentials=true;
 import VueAxios from 'vue-axios'
 Vue.use(VueAxios, axios)
+
 
 Vue.config.productionTip = false
 
