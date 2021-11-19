@@ -119,3 +119,12 @@ npm run dev
 
 3. 外界便可以在浏览器通过http://1.14.108.207进行访问
 
+### 记录问题
+
+1. 跨域
+
+2. set-cookie跨域
+
+   https://yu-jack.github.io/2019/06/02/ajax-with-session/
+
+   
