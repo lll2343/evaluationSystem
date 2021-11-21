@@ -10,23 +10,27 @@
       <ass-01 @nextAss="nextAss"/>
     </div>
     <div v-else-if="pos==2">
-      测评2
+      <ass-02 @nextAss="nextAss"/>
+    </div>
+    <div v-else-if="pos==3">
+      测评3
     </div>
   </div>
 </template>
 
 <script>
 import ass01 from "../GBA/ass01.vue";
+import ass02 from "../GBA/ass02.vue";
 
 export default {
   name: "evaluation",
   data: function () {
     return {
-        pos: 0
+        pos: 2
     };
   },
 
-  components: { ass01 },
+  components: { ass01,ass02 },
   
   methods: {
     nextAss: function(){

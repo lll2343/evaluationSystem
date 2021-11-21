@@ -16,6 +16,7 @@
     "less-loader": "^4.1.0",
     "vue": "^2.5.2",
     "vue-axios": "^3.4.0",
+    "vue-fullpage.js": "^0.1.7",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {

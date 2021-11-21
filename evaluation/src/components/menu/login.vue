@@ -162,7 +162,6 @@ export default {
       if (this.regUser.mail == "") {
         this.open1("您还没有输入邮箱号码", "error");
       } else {
-        this.open1('您已成功发送，这可能会花费几分钟时间','success')
         this.$axios.post(this.url + "users/email",{
           mail: this.regUser.mail
         })

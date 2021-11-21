@@ -51,7 +51,7 @@
 import introduce from "./../introduce/introduce.vue";
 
 export default {
-  name: "ass",
+  name: "ass01",
   data: function () {
     return {
       page: 0, //  当前页
@@ -59,11 +59,11 @@ export default {
       showSpan: false,
       isSuccess: false,
       isfail: false, // 上面三个用于控制类
-      questionNumber: "123421", // 当前应该输入的数字
+      questionNumber: "", // 当前应该输入的数字
       timId: null, // 控制|的定时器
       numTimer: null, // 控制数字出现的定时器
       curIndex: 0, // 当前屏幕出现的数字下标
-      curLen: 4, // 出现的字符长度从4递增到9
+      curLen: 4, // 出现的字符长度从4递增
       result: "",
       successTimes: 0,
       failTimes: 0,

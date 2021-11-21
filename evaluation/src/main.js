@@ -22,6 +22,11 @@ import axios from 'axios'
 axios.defaults.withCredentials = true;//位置必须要在添加到vue原型对象的前面
 Vue.prototype.$axios = axios
 
+// 全屏滚动 vue-fullpage.js
+import 'fullpage.js/vendors/scrolloverflow';
+import VueFullpage from 'vue-fullpage.js'
+Vue.use(VueFullpage)
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
