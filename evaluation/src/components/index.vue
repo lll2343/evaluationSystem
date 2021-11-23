@@ -8,7 +8,7 @@
         <router-link to="#">HOME</router-link>
         <router-link to="#">HOW TO</router-link>
         <router-link to="evaluation">EVALUATION</router-link>
-        <router-link to="#">ABOUT</router-link>
+        <router-link to="desc">ABOUT</router-link>
       </div>
 
       <!-- 登录注册与已登录 -->

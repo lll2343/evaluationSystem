@@ -41,7 +41,7 @@
         </div>
       </div>
       <div class="next-btn">
-         <el-button type="primary" round @click="nextAss">继续测评</el-button>
+        <el-button type="primary" round @click="nextAss">继续测评</el-button>
       </div>
     </div>
   </div>
@@ -180,7 +180,7 @@ export default {
       return str;
     },
     nextAss: function () {
-      this.$emit('nextAss')
+      this.$emit("nextAss");
     },
   },
   components: { introduce },
@@ -282,7 +282,6 @@ export default {
 
 .result-show {
   padding-top: 100px;
-
 }
 
 .result-show-desc {

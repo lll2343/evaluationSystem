@@ -10,7 +10,6 @@ import evaluation from '@/components/menu/evaluation'
 import personal from '@/components/menu/personal'
 import Desc from '@/components/menu/describe'
 
-import Hanoi from '@/components/GBA/hanoi'
 
 Vue.use(Router)
 
@@ -21,11 +20,6 @@ export default new Router({
       path: '/',
       name: 'Index',
       component: Index
-    },
-    {
-      path: '/hanoi',
-      name: 'Hanoi',
-      component: Hanoi
     },
     {
       path: '/evaluation',
