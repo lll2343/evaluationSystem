@@ -25,6 +25,7 @@ app.use(session({
   resave:false,//及时session没有被修改，也保存session的值
   saveUninitialized:false //无论有没有session cookie ，每次请求都设置个session cookie
 }))
+
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
   res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
@@ -46,13 +47,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 // app.use(cors(corsOptions));
 app.use(express.static(path.join(__dirname, 'dist')));
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var testRouter = require('./routes/testuser')
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users'); // 用户包
+const adminRouter = require('./routes/admin'); // 管理员包
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/test',testRouter)
+app.use('/admin',adminRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

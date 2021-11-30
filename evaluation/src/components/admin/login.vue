@@ -1,42 +1,12 @@
 <template>
   <div class="main">
-    <div class="dowebok" id="dowebok" :class="{ 'right-panel-active': isReg }">
-
-      <!-- 注册 -->
-      <div class="form-container sign-up-container">
-        <div class="form">
-          <h1>注册</h1>
-          <input
-            type="text"
-            placeholder="请输入您的邮箱号码"
-            v-model="regUser.mail"
-          />
-          <div class="checkCode">
-            <input
-              type="text"
-              placeholder="验证码"
-              class="checkCode_input"
-              v-model="regUser.code"
-            />
-            <button class="checkCode_btn" @click="postCheckCode">验证码</button>
-          </div>
-          <input type="password" placeholder="密码" v-model="regUser.pwd" />
-          <input
-            type="password"
-            placeholder="请再次输入您的密码"
-            v-model="regUser.spwd"
-          />
-          <button @click="Regester">注册</button>
-        </div>
-      </div>
-
+    <div class="dowebok" id="dowebok">
       <!-- 登录 -->
       <div class="form-container sign-in-container">
         <div class="form">
-          <h1>登录</h1>
-          <input type="text" placeholder="邮箱号" v-model="loginUser.mail" />
-          <input type="password" placeholder="密码" v-model="loginUser.pwd" />
-          <a href="#">忘记密码？</a>
+          <h1>管理员</h1>
+          <input type="text" placeholder="账号" v-model="account" />
+          <input type="password" placeholder="密码" v-model="pwd" />
           <button @click="Login">登录</button>
         </div>
       </div>
@@ -44,52 +14,40 @@
       <!-- 切换栏 -->
       <div class="overlay-container">
         <div class="overlay">
-          <div class="overlay-panel overlay-left">
-            <h1>已有帐号？</h1>
-            <p>请使用您的帐号进行登录</p>
-            <button class="ghost" id="signIn" @click="changeLogin">登录</button>
-          </div>
           <div class="overlay-panel overlay-right">
-            <h1>没有帐号？</h1>
-            <p>立即注册加入我们，和我们一起开始旅程吧</p>
-            <button class="ghost" id="signUp" @click="changeLogin">注册</button>
+            <h1>登录</h1>
+            <p>管理员</p>
+            <!-- <button class="ghost" id="signUp">注册</button> -->
           </div>
         </div>
       </div>
+
     </div>
+
   </div>
 </template>
 
 <script>
 export default {
-  name: "login",
-
+  name: "adminlogin",
   data() {
     return {
       isReg: false,
-      loginUser: {
-        mail: "",
-        pwd: "",
-      },
-      regUser: {
-        mail: "",
-        code: "",
-        pwd: "",
-        spwd: "", // 密码输两次进行验证
-      },
+      account: '',
+      pwd: '',
       url: this.Common.url,
     };
   },
 
-  mounted: function(){
-     if(this.Common.islogin) {
-      this.open1("错误", "你已登录");
-      this.$router.push({ path: "/" });
-     }
-  },
+  //   mounted: function(){
+  //      if(this.Common.islogin) {
+  //       this.open1("错误", "你已登录");
+  //       this.$router.push({ path: "/" });
+  //      }
+  //   },
 
   methods: {
-    open1:function(msg, type) {
+    open1: function (msg, type) {
       this.$message({
         showClose: true,
         message: msg,
@@ -97,86 +55,31 @@ export default {
       });
     },
 
-    // 在注册和登录之间进行切换
-    changeLogin: function () {
-      this.isReg = !this.isReg;
-    },
-
     // 登录
     Login: function () {
-      if (this.loginUser.mail == "") {
-        this.open1("您还没有输入邮箱号码", "error");
-      } else if (this.loginUser.pwd == "") {
+      if (this.account == "") {
+        this.open1("您还没有输入账号", "error");
+      } else if (this.pwd == "") {
         this.open1("您还没有输入密码", "error");
       } else {
         this.$axios
-          .post(this.url + "users/login", {
-            mail: this.loginUser.mail,
-            pwd: this.loginUser.pwd,
+          .post(this.url + "admin/login", {
+            account: this.account,
+            pwd: this.pwd,
           })
           .then((response) => {
             console.log(response.data);
             this.open1(response.data.msg, response.data.type);
-            if(response.data.type=='success'){
-              this.$router.push({ path: "/" });
+            if (response.data.type == "success") {
+              this.$router.push({ path: "/adminhome" });
             }
           })
           .catch((err) => {
             this.open1("错误，请重试", "error");
           });
       }
-    },
-    
-    // 注册
-    Regester: function () {
-      console.log(this.regUser);
-      if (this.regUser.mail == "") {
-        this.open1("您还没有输入邮箱号码", "error");
-      } else if (this.regUser.pwd == "") {
-        this.open1("您还没有输入密码", "error");
-      } else if (this.regUser.pwd != this.regUser.spwd) {
-        this.open1("两次密码输入不统一", "error");
-      } else {
-        this.$axios
-          .post(this.url + "users/reg", {
-            mail: this.regUser.mail,
-            code: this.regUser.code,
-            pwd: this.regUser.pwd,
-          })
-          .then((response) => {
-            console.log(response.data);
-            this.open1(response.data.msg, response.data.type);
-            // 注册成功,则应该跳转到登录页面
-            if (response.data.msg == "注册成功") {
-              this.loginUser.mail = this.regUser.mail;
-              this.isReg = false;
-            }
-          })
-          .catch((err) => {
-            this.open1("错误", "error");
-          });
-      }
-    },
-    // 邮箱发送验证码
-    postCheckCode: function () {
-      if (this.regUser.mail == "") {
-        this.open1("您还没有输入邮箱号码", "error");
-      } else {
-        this.$axios.post(this.url + "users/email",{
-          mail: this.regUser.mail
-        })
-          .then((response)=>{
-            if(response.data.success){
-              this.open1("发送验证码成功，请注意查收", "success");
-            }
-          })
-          .catch((err)=>{
-            console.log(err)
-            this.open1("发送验证失败", "error");
-          })
-      }
-    },
-  }
+    }
+  },
 };
 </script>
 

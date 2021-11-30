@@ -6,9 +6,9 @@
       </div>
       <div class="menu-list">
         <router-link to="#">HOME</router-link>
-        <router-link to="#">HOW TO</router-link>
+        <router-link to="desc">HOW TO</router-link>
         <router-link to="evaluation">EVALUATION</router-link>
-        <router-link to="desc">ABOUT</router-link>
+        <router-link to="adminlogin">ADMIN</router-link>
       </div>
 
       <!-- 登录注册与已登录 -->
@@ -102,7 +102,7 @@ export default {
     },
 
     toLoginpage: function () {
-      this.$router.push({ path: "/login" });
+      this.$router.push({ path: "/userlogin" });
     },
     toDescPage: function () {
       this.$router.push({ path: "/desc" });

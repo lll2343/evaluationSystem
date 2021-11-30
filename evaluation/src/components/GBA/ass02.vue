@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import introduce from "./../introduce/introduce.vue";
+import introduce from "./com/introduce.vue";
 
 export default {
   name: "ass02",

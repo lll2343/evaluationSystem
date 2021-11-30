@@ -179,9 +179,9 @@
 </template>
 
 <script>
-import introduce from "./../introduce/introduce.vue";
-import squareLine from "./squareline.vue";
-import martix from "./matrix.vue";
+import introduce from "./com/introduce.vue";
+import squareLine from "./com/squareline.vue";
+import martix from "./com/matrix.vue";
 
 export default {
   name: "ass03",
