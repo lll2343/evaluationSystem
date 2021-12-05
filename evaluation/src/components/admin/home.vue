@@ -32,8 +32,28 @@
     </div>
 
     <div class="body">
-      <div class="menu">左侧菜单</div>
-      <div class="record">右侧记录</div>
+      <el-container class="mainNonheader">
+        <el-aside class="mainAside" width="200px">
+          <el-menu default-active="/userlist"  router>
+            <el-menu-item class="mainAsideItem" index="/userlist">
+              <i class="el-icon-menu"></i>
+              <span slot="title">用户列表</span>
+            </el-menu-item>
+            <el-menu-item class="mainAsideItem" index="/userquery">
+              <i class="el-icon-search"></i>
+              <span slot="title">查询用户</span>
+            </el-menu-item>
+            <el-menu-item class="mainAsideItem" index="/more">
+              <i class="el-icon-setting"></i>
+              <span slot="title">更多</span>
+            </el-menu-item>
+          </el-menu>
+        </el-aside>
+
+        <el-main class="mainBody">
+          <router-view></router-view>
+        </el-main>
+      </el-container>
     </div>
   </div>
 </template>
@@ -43,8 +63,8 @@ export default {
   name: "adminhome",
   data: function () {
     return {
-      haslogin: false,
-      account: "",
+      haslogin: true,
+      account: "admin",
       url: this.Common.url,
     };
   },
@@ -102,7 +122,7 @@ export default {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  height: 60px;
+  height: 10%;
   background-color: #685bf4;
   align-items: center;
   padding: 0 40px;
@@ -161,7 +181,8 @@ export default {
 
 .body {
   display: flex;
-  width:100%;
+  width: 100%;
+  height: 90%;
   .menu {
     width: 15%;
     background: pink;
@@ -169,5 +190,15 @@ export default {
   .record {
     width: 78%;
   }
+}
+
+.mainNonheader {
+  height: 100%;
+  width: 100%;
+}
+
+.el-aside {
+    background-color: #fefefe;
+    border-right: 1px solid #d0d0d0;
 }
 </style>

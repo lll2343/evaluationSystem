@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 import Index from '@/components/index'; // 首页
+import Desc from '@/components/menu/describe'; // 介绍
 
 import nofound from '@/components/404/404page'; // 404
 
@@ -10,10 +11,14 @@ import personal from '@/components/users/personal'; // 用户个人界面
 import forgetpwd from '@/components/users/forget'; // 忘记密码，找回
 
 import evaluation from '@/components/menu/evaluation'; // 测评
-import Desc from '@/components/menu/describe'; // 介绍
+import assresult from '@/components/GBA/results'; // 测评结果
+
+import light from '@/components/GBA/light'; // 测评结果
 
 import adminlogin from '@/components/admin/login'; // 管理员登录
 import adminhome from '@/components/admin/home'; // 管理员首页
+
+import animal from '@/components/animal/animal'
 
 Vue.use(Router)
 
@@ -29,6 +34,11 @@ export default new Router({
       path: '/evaluation',
       name: 'evaluation',
       component: evaluation
+    },
+    {
+      path: '/assresult',
+      name: 'assresult',
+      component: assresult
     },
     {
       path: '/userlogin',
@@ -53,7 +63,21 @@ export default new Router({
     {
       path: '/adminhome',
       name: 'adminhome',
-      component: adminhome
+      component: adminhome,
+      children: [
+        {
+            "path": "/userlist",
+            component: () => import("@/components/admin/userlist.vue")
+        },
+        {
+            "path": "/userquery",
+            component: () => import("@/components/admin/userquery.vue")
+        },
+        {
+            "path": "/more",
+            component: () => import("@/components/admin/more.vue")
+        }
+    ],
     },
     {
       path: '/desc',
@@ -64,6 +88,15 @@ export default new Router({
       path: '/nofound',
       name: 'nofound',
       component: nofound
+    },{
+      path: '/animal',
+      name: 'animal',
+      component: animal
+    },
+    {
+      path: '/light',
+      name: 'light',
+      component: light
     },
     {
       path: '*',

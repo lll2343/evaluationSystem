@@ -1,10 +1,10 @@
 <template>
   <div class="main">
     <div class="process">
-      <el-progress :percentage="process"></el-progress>
+      <el-progress :percentage="pos *10"></el-progress>
     </div>
     <div class="introduce" v-if="pos == 0">
-      <div class="begin">开始界面，介绍测评，需要时长和怎么做等等~~~~~</div>
+      <ass-begin></ass-begin>
       <div class="btn">
         <el-button type="primary" @click="nextAss" round>开始测评</el-button>
       </div>
@@ -48,7 +48,7 @@
         </el-form>
       </div>
       <div class="btn">
-        <el-button type="primary" @click="nextAss" round>开始测评</el-button>
+        <el-button type="primary" @click="checkInfo" round>开始测评</el-button>
       </div>
     </div>
     <div v-else-if="pos == 2">
@@ -65,6 +65,7 @@
 </template>
 
 <script>
+import assBegin from "../GBA/begin.vue";
 import ass01 from "../GBA/ass01.vue";
 import ass02 from "../GBA/ass02.vue";
 import ass03 from "../GBA/ass03.vue";
@@ -73,29 +74,79 @@ export default {
   name: "evaluation",
   data: function () {
     return {
-      pos: 1,
-      process: 10,
+      pos: 0,
       form: {
         name: "",
         birth: "",
         mail: "",
         major: "",
+        
       },
+      url: this.Common.url,
     };
   },
 
-  components: { ass01, ass02, ass03 },
+  components: {
+    assBegin,
+    ass01,
+    ass02,
+    ass03,
+  },
 
   methods: {
+    open1: function (msg, type) {
+      this.$message({
+        showClose: true,
+        message: msg,
+        type: type,
+      });
+    },
+
     nextAss: function () {
       this.pos = this.pos + 1;
     },
-    onSubmit() {
+    checkInfo() {
       console.log("submit!");
-      console.log(this.form);
+      if (this.form.name == "") {
+        this.open1('姓名为必填内容','error')
+      } else if(this.form.birth == ""){
+        this.open1('生日必填内容','error')
+      } else if(this.form.mail == ""){
+        this.open1('邮箱为必填内容','error')
+      } else if(this.form.major == ""){
+        this.open1('专业为必填内容','error')
+      } else {
+        this.$axios
+          .post(this.url + "access/info",{
+            username: this.form.name,
+            birth: this.form.birth,
+            mail: this.form.mail,
+            major: this.form.major
+          })
+          .then((response) => {
+            console.log(response.data)
+          })
+          .catch((err)=>{
+            this.open1("错误，请重试"+err, "error");
+          })
+      }
+
+      // 检查成功后，下一个测评
+      // this.nextAss()
     },
   },
-  mounted: function () {},
+  mounted: function () {
+    console.log("url",this.url)
+    this.$axios
+          .post(this.url + "access/begin",{})
+          .then((response) => {
+            console.log(response.data)
+            this.form.mail = response.data.mail
+          })
+          .catch((err)=>{
+            this.open1("错误，请重试"+err, "error");
+          })
+  },
 };
 </script>
 

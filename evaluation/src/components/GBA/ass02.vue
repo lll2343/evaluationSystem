@@ -45,7 +45,9 @@
         <div class="result-result">
           <div>本次游戏您总共用了</div>
           <span>{{ steps }}</span>
-          <div>次移动</div>
+          <div>次移动和</div>
+          <span>{{ assTime }}</span>
+          <div>秒</div>
         </div>
       </div>
       <div class="next-btn">
@@ -62,9 +64,11 @@ export default {
   name: "ass02",
   data: function () {
     return {
+      assTime: 0, // 计算完成花费的时间
       page: 0, //  当前页
+      timer: null,
       title: "说明",
-      time: "3",
+      time: "0",
       desc: `汉诺塔
       <br/>
       <br/>从左至右有三根相邻柱子
@@ -335,7 +339,7 @@ export default {
         let win = this.isWin();
         clearTimeout(delayTimer);
         if (win) {
-          this.page += 1;
+          this.finishHanoi();
         }
         delayTimer = null;
       }, this.transitionDelay);
@@ -359,7 +363,23 @@ export default {
       this.initData();
       this.initOrigins();
       this.mkDisks();
+      let that = this;
+      this.timer = setInterval(function () {
+        that.assTime = that.assTime + 1;
+      }, 1000);
     },
+
+    // 完成测评后，记录该次测评数据
+    finishHanoi: function () {
+      // 清除定时器
+      clearInterval(this.timer);
+      this.timer = null;
+      this.page += 1;
+
+      // 此处需要发送Axios请求进行保存
+      
+    },
+
     turnPage: function () {
       this.page = this.page + 1;
     },
