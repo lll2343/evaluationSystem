@@ -77,6 +77,7 @@ export default {
       diskCount: 3,
       diskColor: ["#e99ca3", "#90b1cb", "#a8cf9e", "#7d5990"],
       steps: 0,
+      url: this.Common.url,
     };
   },
   methods: {
@@ -374,12 +375,38 @@ export default {
       // 清除定时器
       clearInterval(this.timer);
       this.timer = null;
-      this.page += 1;
-
       // 此处需要发送Axios请求进行保存
-      
+      this.postRecord();
     },
 
+    postRecord: function () {
+      console.log("发送");
+      let that = this;
+      this.$axios
+        .post(this.url + "access/hanoi", {
+          hanoiSteps: this.steps,
+          hanoiSeconds: this.assTime,
+        })
+        .then((response) => {
+          console.log(response.data);
+          if (response.data.success) {
+            this.page += 1;
+            console.log("发送成功");
+          } else {
+            console.log(response.data.success);
+          }
+        })
+        .catch((err) => {
+          this.open1("错误，请重试" + err, "error");
+        });
+    },
+    open1: function (msg, type) {
+      this.$message({
+        showClose: true,
+        message: msg,
+        type: type,
+      });
+    },
     turnPage: function () {
       this.page = this.page + 1;
     },

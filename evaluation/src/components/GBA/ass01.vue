@@ -65,7 +65,7 @@ export default {
       curIndex: 0, // 当前屏幕出现的数字下标
       curLen: 4, // 出现的字符长度从4递增
       result: "",
-      successTimes: 0,
+      successTimes: 0, // 答对的次数
       failTimes: 0,
       title: "说明",
       time: "2.5",
@@ -75,9 +75,18 @@ export default {
         <br/>在您的错误次数达到三次后，游戏结束
         <br/>
         <br/>在玩游戏时，请不要书面记录您的答案 `,
+      url: this.Common.url,
     };
   },
   methods: {
+    open1: function (msg, type) {
+      this.$message({
+        showClose: true,
+        message: msg,
+        type: type,
+      });
+    },
+
     // 由介绍页到第一页
     nextPage: function () {
       console.log("这是子组件传过来的值");
@@ -123,7 +132,7 @@ export default {
           setTimeout(() => {
             if (_this.failTimes == 3) {
               // 测评结束，翻页并清除定时器
-              _this.page = 3;
+              _this.postRecord();
               clearInterval(_this.timId);
               clearInterval(_this.numTimer);
               _this.timId = null;
@@ -179,6 +188,28 @@ export default {
       }
       return str;
     },
+
+    postRecord: function () {
+      console.log('发送')
+      let that = this
+      this.$axios
+        .post(this.url + "access/numRum", {
+          successTimes: this.successTimes,
+        })
+        .then((response) => {
+          console.log(response.data);
+          if(response.data.success){
+            that.page = 3;
+            console.log('发送成功')
+          } else {
+            console.log(response.data.success)
+          }
+        })
+        .catch((err) => {
+          this.open1("错误，请重试" + err, "error");
+        });
+    },
+
     nextAss: function () {
       this.$emit("nextAss");
     },

@@ -31,6 +31,12 @@ Vue.use(VueFullpage)
 import echarts from 'echarts'
 Vue.prototype.$echarts = echarts;
 
+import Print from 'vue-print-nb'
+Vue.use(Print);
+
+import htmlToPdf from "./../utils/htmlpdf"
+Vue.use(htmlToPdf)
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="process">
-      <el-progress :percentage="pos *10"></el-progress>
+      <el-progress :percentage="pos * 10"></el-progress>
     </div>
     <div class="introduce" v-if="pos == 0">
       <ass-begin></ass-begin>
@@ -80,8 +80,8 @@ export default {
         birth: "",
         mail: "",
         major: "",
-        
       },
+      isLogin: false,
       url: this.Common.url,
     };
   },
@@ -103,49 +103,72 @@ export default {
     },
 
     nextAss: function () {
-      this.pos = this.pos + 1;
+      if (this.pos == 0 && this.isLogin == false) {
+        this.open1(
+          "您尚未登录，不能进行测评,3s后系统将自动跳转到登录页面",
+          "error"
+        );
+        setTimeout(() => {
+          this.$router.push({ path: "/userlogin" });
+        }, 3000);
+      } else {
+        this.pos = this.pos + 1;
+      }
     },
     checkInfo() {
       console.log("submit!");
       if (this.form.name == "") {
-        this.open1('姓名为必填内容','error')
-      } else if(this.form.birth == ""){
-        this.open1('生日必填内容','error')
-      } else if(this.form.mail == ""){
-        this.open1('邮箱为必填内容','error')
-      } else if(this.form.major == ""){
-        this.open1('专业为必填内容','error')
+        this.open1("姓名为必填内容", "error");
+      } else if (this.form.birth == "") {
+        this.open1("生日必填内容", "error");
+      } else if (this.form.mail == "") {
+        this.open1("邮箱为必填内容", "error");
+      } else if (this.form.major == "") {
+        this.open1("专业为必填内容", "error");
       } else {
-        this.$axios
-          .post(this.url + "access/info",{
-            username: this.form.name,
-            birth: this.form.birth,
-            mail: this.form.mail,
-            major: this.form.major
-          })
-          .then((response) => {
-            console.log(response.data)
-          })
-          .catch((err)=>{
-            this.open1("错误，请重试"+err, "error");
-          })
+        this.postInfo();
       }
 
       // 检查成功后，下一个测评
       // this.nextAss()
     },
+    postInfo: function () {
+      this.$axios
+        .post(this.url + "access/info", {
+          username: this.form.name,
+          birth: this.form.birth,
+          mail: this.form.mail,
+          major: this.form.major,
+        })
+        .then((response) => {
+          console.log(response.data);
+          if (response.data.success) {
+            this.nextAss();
+          }
+        })
+        .catch((err) => {
+          this.open1("错误，请重试" + err, "error");
+        });
+    },
   },
   mounted: function () {
-    console.log("url",this.url)
+    console.log("url", this.url);
     this.$axios
-          .post(this.url + "access/begin",{})
-          .then((response) => {
-            console.log(response.data)
-            this.form.mail = response.data.mail
-          })
-          .catch((err)=>{
-            this.open1("错误，请重试"+err, "error");
-          })
+      .post(this.url + "access/begin", {})
+      .then((response) => {
+        if (response.data.msg == "您尚未登录") {
+          this.open1(response.data.msg, response.data.type);
+          this.pos = 0;
+          this.isLogin = false;
+        } else {
+          (this.form.mail = response.data.mail),
+            (this.pos = response.data.process);
+          this.isLogin = true;
+        }
+      })
+      .catch((err) => {
+        this.open1("错误，请重试" + err, "error");
+      });
   },
 };
 </script>

@@ -76,7 +76,11 @@ export default new Router({
         {
             "path": "/more",
             component: () => import("@/components/admin/more.vue")
-        }
+        },
+        {
+          "path": "/userdetail",
+          component: () => import("@/components/admin/userdetail.vue")
+      }
     ],
     },
     {

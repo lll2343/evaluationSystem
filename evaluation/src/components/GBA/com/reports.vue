@@ -6,6 +6,7 @@
         :height="height"
         :autoplay="false"
         :loop="false"
+        :initial-index="iniIndex"
       >
         <el-carousel-item v-for="item in reports" :key="item.id">
           <div class="title">{{ item.title }}</div>
@@ -21,8 +22,8 @@ export default {
   name: "report",
   data: function () {
     return {
-      height: "273px",
-      curIndex: 1,
+      height: "260px",
+      iniIndex: 1,
       reports: [
         {
           id: 0,
@@ -88,9 +89,28 @@ export default {
                 当然，我们也要提醒您，凡事悠着点。速度不是最重要的，方向才是。",
         },
       ],
+
     };
   },
-  mounted: function () {},
+  props:{
+    value:{ type: Number, default: 22 },
+  },
+  methods: {
+    changeIniIndex: function(){
+      if(this.value <= 30){
+      this.iniIndex = 0
+    } else if(this.value > 30 && this.value <= 60){
+      this.iniIndex = 1
+    } else if(this.value > 60 && this.value <= 75){
+      this.iniIndex = 2
+    } else {
+      this.iniIndex = 3
+    }
+    }
+  },
+  mounted: function () {
+    this.changeIniIndex()
+  },
 };
 </script>
 
@@ -98,13 +118,14 @@ export default {
 .title {
   font-size: 1.1em;
   font-weight: 600;
+  padding-top:3px;
 }
 
 .desc {
   line-height: 1.4em;
   text-align: left;
   text-indent: 1.6em;
-  padding: 20px;
+  padding: 8px 20px;
 }
 
 .block {

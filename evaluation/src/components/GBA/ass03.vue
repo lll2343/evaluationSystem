@@ -207,6 +207,7 @@ export default {
       lefttime: 10, // 倒计时
       resultList: "", //记录做题情况，0表示做错，1表示做对
       successTime: 0, // 做对题目的数量
+      url: this.Common.url,
     };
   },
   components: {
@@ -215,6 +216,14 @@ export default {
     martix,
   },
   methods: {
+    open1: function (msg, type) {
+      this.$message({
+        showClose: true,
+        message: msg,
+        type: type,
+      });
+    },
+
     checkNum: function () {
       if (this.number == this.answerList[this.currentQuestion]) {
         this.isSuccess = true;
@@ -240,17 +249,19 @@ export default {
         _this.currentQuestion = _this.currentQuestion + 1;
         if (_this.currentQuestion == 10) {
           // 此时全部都做完了
-          _this.page = _this.page + 1;
+          this.postRecord();
           console.log("做题记录", _this.resultList);
           console.log("做对的题数", _this.successTime);
+          clearInterval(_this.countTimer);
+          clearInterval(_this.timId);
+        } else {
+          _this.number = "";
+          _this.isSuccess = false;
+          _this.isfail = false;
+          _this.lefttime = 10;
+          _this.controlInput();
+          _this.countDown();
         }
-
-        _this.number = "";
-        _this.isSuccess = false;
-        _this.isfail = false;
-        _this.lefttime = 10;
-        _this.controlInput();
-        _this.countDown();
       }, 3000);
     },
 
@@ -313,6 +324,26 @@ export default {
         this.countTimer = null;
         document.onkeydown = null; // 做完了记得清除定时器和鼠标监听事件
       }
+    },
+
+    postRecord: function () {
+      console.log("发送");
+      this.$axios
+        .post(this.url + "access/math", {
+          mathQue: this.resultList,
+        })
+        .then((response) => {
+          console.log(response.data);
+          if (response.data.success) {
+            console.log("发送成功");
+            this.page = this.page + 1;
+          } else {
+            console.log(response.data.success);
+          }
+        })
+        .catch((err) => {
+          this.open1("错误，请重试" + err, "error");
+        });
     },
     nextAss: function () {
       this.$emit("nextAss");

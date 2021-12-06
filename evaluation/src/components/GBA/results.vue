@@ -2,24 +2,67 @@
   <div class="main">
     <div class="head">
       测评结果报告
-      <div class="btn">打印报告</div>
+      <div class="btn" @click="ExportSavePdf('ReportOf'+username,'')">打印报告</div>
     </div>
+
     <div class="body">
-      <div class="index">
-        <div class="charts">
-          <div class="title">创新素质指数</div>
-          <div class="graph">
-            <charts :count="indexCount"></charts>
-          </div>
+      <div id="pdfCentent">
+        <div class="info">
+          <el-descriptions class="margin-top" :column="3" border>
+            <el-descriptions-item content-class-name="my-content">
+              <template slot="label">
+                <i class="el-icon-user"></i>
+                用户名
+              </template>
+              {{ username }}
+            </el-descriptions-item>
+            <el-descriptions-item>
+              <template slot="label">
+                <i class="el-icon-mobile-phone"></i>
+                邮箱
+              </template>
+              {{ mail }}
+            </el-descriptions-item>
+            <el-descriptions-item>
+              <template slot="label">
+                <i class="el-icon-orange"></i>
+                生日
+              </template>
+              {{ birth }}
+            </el-descriptions-item>
+            <el-descriptions-item>
+              <template slot="label">
+                <i class="el-icon-tickets"></i>
+                专业
+              </template>
+              <el-tag size="small" type="info">{{ major }}</el-tag>
+            </el-descriptions-item>
+            <el-descriptions-item>
+              <template slot="label">
+                <i class="el-icon-tickets"></i>
+                测评分数
+              </template>
+              <span v-if="score != 0">{{ score }}</span>
+              <el-tag size="small" type="danger" v-else>未测评</el-tag>
+            </el-descriptions-item>
+          </el-descriptions>
         </div>
-        <div class="desc">
-          <div class="title">创新素质指数</div>
-          <div class="report">
-            <report></report>
+        <div class="index">
+          <div class="charts">
+            <div class="title">创新素质指数</div>
+            <div class="graph">
+              <charts :value="score"></charts>
+            </div>
+          </div>
+          <div class="desc">
+            <div class="title">创新素质指数</div>
+            <div class="report">
+              <report :value="score"></report>
+            </div>
           </div>
         </div>
       </div>
-      <div class="btn">
+      <div class="btn back-btn">
         <el-button @click="backToIndex">返回首页</el-button>
       </div>
     </div>
@@ -29,21 +72,31 @@
 <script>
 import charts from "./com/charts.vue";
 import report from "./com/reports.vue";
+import vuepdf from "vue-pdf";
 
 export default {
   name: "assresult",
   data: function () {
     return {
-      indexCount: 10,
+      mail: "2281250383@qq.com",
+      username: "lyz",
+      birth: "2000-11-14",
+      major: "计算机",
+      score: 80
     };
   },
   components: {
     charts,
     report,
+    vuepdf,
   },
   methods: {
     backToIndex: function () {
       this.$router.push({ path: "/" });
+    },
+    print() {
+      console.log("打印");
+      // this.$refs.pdf.print()
     },
   },
   mounted: function () {},
@@ -67,9 +120,9 @@ export default {
 
 .head {
   width: 100%;
-  height: 13%;
+  height: 10%;
   font-size: 2.5em;
-  line-height: 70px;
+  align-content: center;
   background: #fff;
   .btn {
     float: right;
@@ -87,6 +140,10 @@ export default {
   }
 }
 
+.info {
+  margin: 10px 5%;
+}
+
 .body {
   width: 100%;
   height: 90%;
@@ -94,19 +151,19 @@ export default {
     display: flex;
     width: 100%;
     height: 90%;
-    padding: 50px;
+    padding: 3px 50px;
     padding-bottom: 0;
     box-sizing: border-box;
     .charts,
     .desc {
       background: #fff;
       width: 35%;
-      height: 90%;
+      height: 85%;
       border: 1px solid #ccc;
       border-radius: 10px;
       .title {
         height: 20%;
-        line-height: 50px;
+        line-height: 36px;
         border-bottom: 2px solid #f17c67;
         width: 100%;
         font-size: 1.2em;
@@ -117,7 +174,7 @@ export default {
       width: 62%;
       margin-left: 30px;
       .report {
-        height: 80%;
+        height: 75%;
         width: 100%;
       }
     }
@@ -129,5 +186,9 @@ export default {
     align-items: center;
     justify-content: center;
   }
+}
+
+.back-btn {
+  margin-top: 20px;
 }
 </style>

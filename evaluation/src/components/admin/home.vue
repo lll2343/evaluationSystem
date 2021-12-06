@@ -63,7 +63,7 @@ export default {
   name: "adminhome",
   data: function () {
     return {
-      haslogin: true,
+      haslogin: false,
       account: "admin",
       url: this.Common.url,
     };

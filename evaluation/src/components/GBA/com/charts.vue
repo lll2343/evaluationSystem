@@ -8,6 +8,9 @@ export default {
   data() {
     return {};
   },
+  props:{
+    value:{ type: Number, default: 22 },
+  },
   methods: {
     initCharts() {
       let myChart = this.$echarts.init(this.$refs.chart);
@@ -29,7 +32,7 @@ export default {
             },
             data: [
               {
-                value: 50,
+                value: this.value,
               },
             ],
           },
@@ -47,7 +50,7 @@ export default {
 <style scoped>
 .charts {
   width: 300px;
-  height: 300px;
+  height: 260px;
   margin: 0 auto;
   
 }
