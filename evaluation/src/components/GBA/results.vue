@@ -2,50 +2,21 @@
   <div class="main">
     <div class="head">
       测评结果报告
-      <div class="btn" @click="ExportSavePdf('ReportOf'+username,'')">打印报告</div>
+      <div class="btn" @click="ExportSavePdf('ReportOf' + username, '')">
+        打印报告
+      </div>
     </div>
 
     <div class="body">
       <div id="pdfCentent">
         <div class="info">
-          <el-descriptions class="margin-top" :column="3" border>
-            <el-descriptions-item content-class-name="my-content">
-              <template slot="label">
-                <i class="el-icon-user"></i>
-                用户名
-              </template>
-              {{ username }}
-            </el-descriptions-item>
-            <el-descriptions-item>
-              <template slot="label">
-                <i class="el-icon-mobile-phone"></i>
-                邮箱
-              </template>
-              {{ mail }}
-            </el-descriptions-item>
-            <el-descriptions-item>
-              <template slot="label">
-                <i class="el-icon-orange"></i>
-                生日
-              </template>
-              {{ birth }}
-            </el-descriptions-item>
-            <el-descriptions-item>
-              <template slot="label">
-                <i class="el-icon-tickets"></i>
-                专业
-              </template>
-              <el-tag size="small" type="info">{{ major }}</el-tag>
-            </el-descriptions-item>
-            <el-descriptions-item>
-              <template slot="label">
-                <i class="el-icon-tickets"></i>
-                测评分数
-              </template>
-              <span v-if="score != 0">{{ score }}</span>
-              <el-tag size="small" type="danger" v-else>未测评</el-tag>
-            </el-descriptions-item>
-          </el-descriptions>
+          <user-detail
+            :birth="birth"
+            :mail="mail"
+            :major="major"
+            :score="score"
+            :username="username"
+          ></user-detail>
         </div>
         <div class="index">
           <div class="charts">
@@ -73,6 +44,7 @@
 import charts from "./com/charts.vue";
 import report from "./com/reports.vue";
 import vuepdf from "vue-pdf";
+import userDetail from "./../userdetail/userDetail.vue";
 
 export default {
   name: "assresult",
@@ -82,21 +54,18 @@ export default {
       username: "lyz",
       birth: "2000-11-14",
       major: "计算机",
-      score: 80
+      score: 80,
     };
   },
   components: {
     charts,
     report,
     vuepdf,
+    userDetail,
   },
   methods: {
     backToIndex: function () {
       this.$router.push({ path: "/" });
-    },
-    print() {
-      console.log("打印");
-      // this.$refs.pdf.print()
     },
   },
   mounted: function () {},

@@ -51,11 +51,13 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users'); // 用户包
 const adminRouter = require('./routes/admin'); // 管理员包
 const accessRouter = require('./routes/access'); // 测评
+const recordRouter = require('./routes/record'); // 记录
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/admin',adminRouter);
 app.use('/access',accessRouter);
+app.use('/record',recordRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

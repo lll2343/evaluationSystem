@@ -13,12 +13,11 @@ import forgetpwd from '@/components/users/forget'; // 忘记密码，找回
 import evaluation from '@/components/menu/evaluation'; // 测评
 import assresult from '@/components/GBA/results'; // 测评结果
 
-import light from '@/components/GBA/light'; // 测评结果
 
 import adminlogin from '@/components/admin/login'; // 管理员登录
 import adminhome from '@/components/admin/home'; // 管理员首页
 
-import animal from '@/components/animal/animal'
+import animal from '@/components/GBA/animal/myanimal';
 
 Vue.use(Router)
 
@@ -96,11 +95,6 @@ export default new Router({
       path: '/animal',
       name: 'animal',
       component: animal
-    },
-    {
-      path: '/light',
-      name: 'light',
-      component: light
     },
     {
       path: '*',

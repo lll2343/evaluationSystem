@@ -43,7 +43,7 @@
 
     <div v-else-if="scene === 5" class="scene flex" @click="changeScene(6)">
       <div class="text center mb">
-        现在我们模拟一个简单的10人游戏，假设10个人都是随机者
+        现在我们模拟一个简单的3人游戏，你和两个随机者
       </div>
       <div class="players mb">
         <one-player
@@ -53,7 +53,10 @@
         ></one-player>
       </div>
       <div class="text center">
-        随机者的出牌策略很简单，就是完全随机从手牌中选一张打出，不考虑任何其他因素。游戏进行时，有人一旦达成淘汰条件就立刻出局，直到所有人都无法再出牌为止，来看看结果如何
+        随机者的出牌策略很简单，就是完全随机从手牌中选一张打出，不考虑任何其他因素。
+        <br/>
+        <br/>
+        你需要选择两个随记者中的任意一个进行对局，出完所有手牌，最后评分将由你手中星的数量决定
       </div>
     </div>
 
@@ -915,8 +918,6 @@
 <style scoped lang="less">
 * {
   box-sizing: border-box;
-  font-family: -apple-system, SF UI Text, Arial, PingFang SC, Hiragino Sans GB,
-    Microsoft YaHei, WenQuanYi Micro Hei, sans-serif;
 }
 .pt {
   padding-top: 20px;
@@ -951,19 +952,23 @@
   .text {
     width: 100%;
     padding: 0 20px;
+    text-indent: 1.1em;
+    font-size: 1.3em;
     &.center {
       text-align: center;
     }
   }
   .opes {
     width: 100%;
-    padding: 0 20px;
+    padding: 0 30%;
+
     display: flex;
     flex-flow: row nowrap;
     .btn {
+      font-size: 1.2em;
       flex: 1 0 0;
-      height: 60px;
-      line-height: 60px;
+      height: 40px;
+      line-height: 40px;
       margin-left: 20px;
       &:first-child {
         margin-left: 0;
@@ -1209,7 +1214,7 @@ export default {
       notifyPromise: Promise.resolve(),
       timeInterval: null,
       interval: 400,
-      scene: 1,
+      scene: 100,
       players: [],
       defaultPlayer: new Player(0, "player1"),
       logs: [],
@@ -1402,7 +1407,7 @@ export default {
       this.logs = [];
       this.autoPlay();
     },
-    autoPlay(loop = false) {
+    autoPlay(loop = true) {
       if (loop) {
         while (this.playingPlayers.length >= 2) {
           let randomSortPlayingPlayers = this.$u.shuffleArray(

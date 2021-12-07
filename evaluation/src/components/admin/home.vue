@@ -69,19 +69,19 @@ export default {
     };
   },
   mounted: function () {
-    // this.$axios
-    //   .post(this.url + "admin/checklogin")
-    //   .then((response) => {
-    //     console.log(response.data);
-    //     if (response.data.islogin) {
-    //       this.haslogin = true;
-    //       this.account = response.data.name;
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     this.open1("错误，请重试", "error");
-    //   });
+    this.$axios
+      .post(this.url + "admin/checklogin")
+      .then((response) => {
+        console.log(response.data);
+        if (response.data.islogin) {
+          this.haslogin = true;
+          this.account = response.data.name;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        this.open1("错误，请重试", "error");
+      });
   },
   methods: {
     open1: function (msg, type) {

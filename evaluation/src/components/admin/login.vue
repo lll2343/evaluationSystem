@@ -39,13 +39,6 @@ export default {
     };
   },
 
-  //   mounted: function(){
-  //      if(this.Common.islogin) {
-  //       this.open1("错误", "你已登录");
-  //       this.$router.push({ path: "/" });
-  //      }
-  //   },
-
   methods: {
     open1: function (msg, type) {
       this.$message({

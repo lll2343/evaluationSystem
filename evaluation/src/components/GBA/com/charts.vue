@@ -3,6 +3,7 @@
     <div class="charts" ref="chart"></div>
   </div>
 </template>
+
 <script>
 export default {
   data() {
@@ -52,6 +53,5 @@ export default {
   width: 300px;
   height: 260px;
   margin: 0 auto;
-  
 }
 </style>

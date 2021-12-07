@@ -1,71 +1,68 @@
 <template>
   <div class="main">
-    <div class="detail">
-      <el-descriptions
-        class="margin-top"
-        title="用户信息"
-        :column="3"
-        border
-      >
-        <el-descriptions-item content-class-name="my-content">
-          <template slot="label">
-            <i class="el-icon-user"></i>
-            用户名
-          </template>
-          {{username}}
-        </el-descriptions-item>
-        <el-descriptions-item>
-          <template slot="label">
-            <i class="el-icon-mobile-phone"></i>
-            邮箱
-          </template>
-          {{mail}}
-        </el-descriptions-item>
-        <el-descriptions-item>
-          <template slot="label">
-            <i class="el-icon-orange"></i>
-            生日
-          </template>
-          {{birth}}
-        </el-descriptions-item>
-        <el-descriptions-item>
-          <template slot="label">
-            <i class="el-icon-tickets"></i>
-            专业
-          </template>
-          <el-tag size="small" type="info">{{major}}</el-tag>
-        </el-descriptions-item>
-        <el-descriptions-item>
-          <template slot="label">
-            <i class="el-icon-tickets"></i>
-            测评分数
-          </template>
-          <span v-if="score != 0">{{score}}</span>
-          <el-tag size="small" type="danger" v-else>未测评</el-tag>
-        </el-descriptions-item>
-      </el-descriptions>
-      
+    <div class="info">
+      <user-detail
+        :birth="birth"
+        :mail="mail"
+        :major="major"
+        :score="score"
+        :username="username"
+      ></user-detail>
     </div>
   </div>
 </template>
 
 <script>
+import userDetail from "./../userdetail/userDetail.vue";
+import { formatDate } from "./../../../utils/format.js";
+
 export default {
   name: "userdetail",
   data: function () {
     return {
       mail: "2281250383@qq.com",
-      username: 'lyz',
-      birth: '2000-11-14',
-      major:'计算机',
+      username: "lyz",
+      birth: "2000-11-14",
+      major: "计算机",
       score: 0,
+      url: this.Common.url,
     };
+  },
+  components: {
+    userDetail,
   },
   mounted: function () {
     console.log(this.$route.query.mail);
-    // this.mail = this.$route.query.mail;
+    this.mail = this.$route.query.mail;
+    this.detailPost();
   },
-  methods: {},
+  methods: {
+    open1: function (msg, type) {
+      this.$message({
+        showClose: true,
+        message: msg,
+        type: type,
+      });
+    },
+
+    detailPost: function () {
+      this.$axios
+        .post(this.url + "record/detail", {
+          mail: this.mail,
+        })
+        .then((response) => {
+          console.log("response", response.data);
+          this.username = response.data.username;
+          this.major = response.data.major;
+          this.birth = formatDate(response.data.birth);
+          this.score = response.data.process;
+        })
+        .catch((err) => {
+          console.log(err);
+          this.open1("错误，请重试", "error");
+        });
+    },
+  },
 };
 </script>
 
@@ -77,11 +74,16 @@ export default {
   align-items: center;
 }
 
+.info {
+  width: 90%;
+  margin: 0 auto;
+}
+
 .top-desc {
   font-size: 1.3em;
 }
 
 .my-content {
-    padding: 0 30px;
+  padding: 0 30px;
 }
 </style>
