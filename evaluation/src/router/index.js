@@ -19,6 +19,9 @@ import adminhome from '@/components/admin/home'; // 管理员首页
 
 import animal from '@/components/GBA/animal/myanimal';
 
+import raven from '@/components/GBA/raven/Raven';
+
+
 Vue.use(Router)
 
 export default new Router({
@@ -95,6 +98,11 @@ export default new Router({
       path: '/animal',
       name: 'animal',
       component: animal
+    },
+    {
+      path: '/raven',
+      name: 'raven',
+      component: raven
     },
     {
       path: '*',

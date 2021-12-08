@@ -1,7 +1,7 @@
 <template>
   <div class="main">
-    <div class="process">
-      <el-progress :percentage="pos * 10"></el-progress>
+    <div class="process" v-if="pos < 100">
+      <el-progress :percentage="pos * 10" ></el-progress>
     </div>
     <div class="introduce" v-if="pos == 0">
       <ass-begin></ass-begin>
@@ -60,7 +60,19 @@
     <div v-else-if="pos == 4">
       <ass-03 @nextAss="nextAss" />
     </div>
-    <div v-else-if="pos == 5">测评4</div>
+    <div v-else-if="pos == 5">
+        <animal @nextAss="nextAss"></animal>
+    </div>
+    <div v-else-if="pos == 6">
+        <raven @nextAss="nextAss"></raven>
+    </div>
+    <div v-else-if="pos == 7">
+      这是最后一项测评了！！！！！！
+    </div>
+
+    <div v-else-if="pos == 100">
+      <result></result>
+    </div>
   </div>
 </template>
 
@@ -69,19 +81,22 @@ import assBegin from "../GBA/begin.vue";
 import ass01 from "../GBA/ass01.vue";
 import ass02 from "../GBA/ass02.vue";
 import ass03 from "../GBA/ass03.vue";
+import animal from "../GBA/animal/myanimal.vue";
+import raven from "../GBA/raven/Raven.vue";
+import result from "../GBA/results.vue";
 
 export default {
   name: "evaluation",
   data: function () {
     return {
-      pos: 0,
+      pos: 6,
       form: {
         name: "",
         birth: "",
         mail: "",
         major: "",
       },
-      isLogin: false,
+      isLogin: true,
       url: this.Common.url,
     };
   },
@@ -91,6 +106,9 @@ export default {
     ass01,
     ass02,
     ass03,
+    animal,
+    raven,
+    result
   },
 
   methods: {
@@ -153,22 +171,22 @@ export default {
   },
   mounted: function () {
     console.log("url", this.url);
-    this.$axios
-      .post(this.url + "access/begin", {})
-      .then((response) => {
-        if (response.data.msg == "您尚未登录") {
-          this.open1(response.data.msg, response.data.type);
-          this.pos = 0;
-          this.isLogin = false;
-        } else {
-          (this.form.mail = response.data.mail),
-            (this.pos = response.data.process);
-          this.isLogin = true;
-        }
-      })
-      .catch((err) => {
-        this.open1("错误，请重试" + err, "error");
-      });
+    // this.$axios
+    //   .post(this.url + "access/begin", {})
+    //   .then((response) => {
+    //     if (response.data.msg == "您尚未登录") {
+    //       this.open1(response.data.msg, response.data.type);
+    //       this.pos = 0;
+    //       this.isLogin = false;
+    //     } else {
+    //       (this.form.mail = response.data.mail),
+    //         (this.pos = response.data.process);
+    //       this.isLogin = true;
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     this.open1("错误，请重试" + err, "error");
+    //   });
   },
 };
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div v-if="scene === 1" class="scene flex">
-      <div class="text center mb">你看过电影《动物世界》吗？</div>
+      <div class="text center mb mt">你看过电影《动物世界》吗？</div>
       <div class="opes">
         <div class="btn" @click="changeScene(2)">看过</div>
         <div class="btn" @click="changeScene(3)">没看过</div>
@@ -9,7 +9,7 @@
     </div>
 
     <div v-else-if="scene === 2" class="scene flex">
-      <div class="text center mb">
+      <div class="text center mb mt">
         你是否还记得电影里的石头剪刀布的游戏规则？
       </div>
       <div class="opes">
@@ -85,8 +85,13 @@
       </div>
     </div>
 
-    <div class="scene flex" v-else-if="scene === 7">游戏结束
-      <h1>您所获得的星星数为{{player0.star}}</h1>
+    <div class="scene flex" v-else-if="scene === 7">
+      <div class="result-title">测试完成</div>
+      <div class="result-desc">感谢您的参与</div>
+      <h1>您所获得的星星数为{{ player0.star }}</h1>
+      <div class="next-btn">
+        <el-button type="primary" round @click="nextAss">继续测评</el-button>
+      </div>
     </div>
 
     <div v-if="battleIndex !== -1" class="mask">
@@ -177,7 +182,6 @@ class Player {
   }
 }
 
-
 const card = {
   r: "石头",
   s: "剪刀",
@@ -203,6 +207,9 @@ export default {
     onePlayer,
   },
   methods: {
+    nextAss: function () {
+      this.$emit("nextAss");
+    },
     changeScene(scene) {
       this.scene = scene;
     },
@@ -244,7 +251,7 @@ export default {
         this.willPlay = "";
         if (this.player0.cardNumber() === 0) {
           this.scene = 7;
-          console.log('游戏结束')
+          console.log("游戏结束");
         }
       }, 2000);
     },
@@ -296,6 +303,10 @@ export default {
 
 .mb {
   margin-bottom: 30px;
+}
+
+.mt {
+  margin-top: 120px;
 }
 
 .scene {
@@ -446,5 +457,27 @@ export default {
 
 .inline-h {
   line-height: 2em;
+}
+
+.result-title {
+  box-sizing: border-box;
+  font-size: 2.8em;
+  color: #6b5ef7;
+  font-weight: 600;
+  padding: 30px;
+  /* margin-top: 20px; */
+}
+
+.result-desc {
+  padding: 40px 0;
+  font-size: 1.4em;
+}
+
+h1 {
+  font-size: 1.8em;
+}
+
+.next-btn {
+  padding-top: 80px;
 }
 </style>

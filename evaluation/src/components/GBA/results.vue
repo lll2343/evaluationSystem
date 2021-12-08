@@ -89,14 +89,14 @@ export default {
 
 .head {
   width: 100%;
-  height: 10%;
+  height: 50px;
   font-size: 2.5em;
   align-content: center;
   background: #fff;
   .btn {
     float: right;
     width: 100px;
-    height: 100%;
+    height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
