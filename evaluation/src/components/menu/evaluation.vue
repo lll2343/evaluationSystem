@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="process" v-if="pos < 100">
-      <el-progress :percentage="pos * 10" ></el-progress>
+      <el-progress :percentage="pos * 18"></el-progress>
     </div>
     <div class="introduce" v-if="pos == 0">
       <ass-begin></ass-begin>
@@ -61,15 +61,8 @@
       <ass-03 @nextAss="nextAss" />
     </div>
     <div v-else-if="pos == 5">
-        <animal @nextAss="nextAss"></animal>
+      <animal @nextAss="nextAss"></animal>
     </div>
-    <div v-else-if="pos == 6">
-        <raven @nextAss="nextAss"></raven>
-    </div>
-    <div v-else-if="pos == 7">
-      这是最后一项测评了！！！！！！
-    </div>
-
     <div v-else-if="pos == 100">
       <result></result>
     </div>
@@ -82,21 +75,20 @@ import ass01 from "../GBA/ass01.vue";
 import ass02 from "../GBA/ass02.vue";
 import ass03 from "../GBA/ass03.vue";
 import animal from "../GBA/animal/myanimal.vue";
-import raven from "../GBA/raven/Raven.vue";
 import result from "../GBA/results.vue";
 
 export default {
   name: "evaluation",
   data: function () {
     return {
-      pos: 6,
+      pos: 0,
       form: {
         name: "",
         birth: "",
         mail: "",
         major: "",
       },
-      isLogin: true,
+      isLogin: false,
       url: this.Common.url,
     };
   },
@@ -107,8 +99,7 @@ export default {
     ass02,
     ass03,
     animal,
-    raven,
-    result
+    result,
   },
 
   methods: {
@@ -131,6 +122,9 @@ export default {
         }, 3000);
       } else {
         this.pos = this.pos + 1;
+        if(this.pos == 6){
+          this.pos = 100;
+        }
       }
     },
     checkInfo() {

@@ -54,7 +54,7 @@ export default {
           console.log("response", response.data);
           this.username = response.data.username;
           this.major = response.data.major;
-          this.birth = formatDate(response.data.birth);
+          this.birth = response.data.birth == null ? '' : formatDate(response.data.birth);
           this.score = response.data.process;
         })
         .catch((err) => {

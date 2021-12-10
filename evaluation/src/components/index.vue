@@ -5,8 +5,8 @@
         <router-link to="#" class="">首页</router-link>
       </div>
       <div class="menu-list">
-        <router-link to="#">HOME</router-link>
-        <router-link to="desc">HOW TO</router-link>
+        <router-link to="desc">HOW To</router-link>
+        <router-link to="raven">RAVEN</router-link>
         <router-link to="evaluation">EVALUATION</router-link>
         <router-link to="adminlogin">ADMIN</router-link>
       </div>
@@ -50,7 +50,7 @@
         <div class="body-desc-text">aaa / bbb / ccc</div>
         <div class="body-btn">
           <div class="btn-one btn" @click="toDescPage">Discovery More</div>
-          <div class="btn-two">Btn two</div>
+          <div class="btn-two" @click="toRavenTest">Raven's Standard Progressive Matrices </div>
         </div>
       </div>
       <div class="img-bg">
@@ -106,6 +106,10 @@ export default {
     },
     toDescPage: function () {
       this.$router.push({ path: "/desc" });
+    },
+
+    toRavenTest: function(){
+       this.$router.push({ path: "/raven" });
     },
     handleLoginCommand: function (command) {
       if (command == "loginout") {

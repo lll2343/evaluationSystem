@@ -52,12 +52,16 @@ const usersRouter = require('./routes/users'); // 用户包
 const adminRouter = require('./routes/admin'); // 管理员包
 const accessRouter = require('./routes/access'); // 测评
 const recordRouter = require('./routes/record'); // 记录
+const feedbackRouter = require('./routes/feedback');
+const ravenRouter = require('./routes/raven');
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/admin',adminRouter);
 app.use('/access',accessRouter);
 app.use('/record',recordRouter);
+app.use('/feedback',feedbackRouter);
+app.use('/raven',ravenRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
