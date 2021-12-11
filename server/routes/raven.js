@@ -197,7 +197,7 @@ router.post('/getscore', async (req, resp) => {
     console.log(rightCount)
     let score = getRavenScore(rightCount, age);
     console.log('得分', score);
-    let sql = `update users set ravenScore = ${score} 
+    sql = `update users set ravenScore = ${score} 
         where mail='${mail}'`;
     await dbs.Run(sql);
     let level = getLevel(score);

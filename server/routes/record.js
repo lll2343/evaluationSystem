@@ -65,7 +65,7 @@ router.post('/detail', async (req, resp) => {
     if(sqlres.process==100){
         // 查询
         sql = ` select remNum,hanoiSteps,hanoiSeconds,mathQue,cardStar 
-            from users records 
+            from records 
             where mail = '${mail}'; `
         recordsres = await dbs.QueryOne(sql);
         let mathQue = 0;
@@ -85,7 +85,7 @@ router.post('/detail', async (req, resp) => {
             "hanoiSteps": recordsres.hanoiSteps,
             "hanoiSeconds": recordsres.hanoiSeconds,
             "mathQue": mathQue,
-            "cardStar": response.cardStar
+            "cardStar": recordsres.cardStar
         });
     } else {
         resp.json({
