@@ -27,6 +27,7 @@ router.post('/info', async (req, resp) => {
     console.log(req.body)
     if (sessionMail != mail) {
         resp.json({ 'msg': '当前所填写邮箱和注册邮箱不一致', 'type': 'error' });
+        return;
     }
     let date = new Date(birth).getTime();
 
@@ -37,9 +38,13 @@ router.post('/info', async (req, resp) => {
     let sqlres = await dbs.Run(sql);
 
     // 同时创建记录
-    let sql2 = `insert into records (mail) values ('${mail}')`;
-    await dbs.Run(sql2)
-
+    sql = `select mail from records where mail='${mail}';`
+    sqlres = await dbs.QueryOne(sql);
+    if(typeof(sqlres) == 'undefined'){
+        sql = `insert into records (mail) values ('${mail}')`;
+        sqlres = await dbs.Run(sql);
+    } 
+    
     if(sqlres.success){
         resp.json({ 'success': true });
     } else {
@@ -47,9 +52,11 @@ router.post('/info', async (req, resp) => {
     }
 })
 
+/**
+ * @function numRum 随机记数字的结果
+ */
 router.post('/numRum', async (req, resp) => {
     console.log('记数字结果记录');
-    console.log(req.session.mail);
     let sessionMail = req.session.mail;
     let { successTimes } = req.body;
     let sql = ` update records set remNum = ${successTimes} 
@@ -69,7 +76,8 @@ router.post('/hanoi',async (req,resp) => {
     let { hanoiSteps,hanoiSeconds } = req.body;
     let sessionMail = req.session.mail;
 
-    let sql = ` update records set hanoiSteps = ${hanoiSteps} ,
+    let sql = ` update records set 
+        hanoiSteps = ${hanoiSteps} ,
         hanoiSeconds = ${hanoiSeconds}
         where mail = '${sessionMail}' `;
     let sqlres = await dbs.Run(sql);
@@ -88,10 +96,29 @@ router.post('/math',async (req,resp) => {
     let { mathQue } = req.body;
     let sessionMail = req.session.mail;
 
-    let sql = ` update records set mathQue = '${mathQue}'
+    let sql = ` update records set 
+        mathQue = '${mathQue}'
         where mail = '${sessionMail}' `;
     let sqlres = await dbs.Run(sql);
     let sql2 = ` update users set process = 5 where mail = '${sessionMail}'`
+    let sqlres2 = await dbs.Run(sql2);
+    if(sqlres.success && sqlres2.success){
+        resp.json({ 'success': true });
+    } else {
+        resp.json({ 'success': false });
+    }
+})
+
+router.post('/card',async (req,resp)=>{
+    console.log('卡牌游戏');
+    let {star} = req.body;
+    let sessionMail = req.session.mail;
+
+    let sql = ` update records set 
+        cardStar = '${star}'
+        where mail = '${sessionMail}';`;
+    let sqlres = await dbs.Run(sql);
+    let sql2 = ` update users set process = 100 where mail = '${sessionMail}';`;
     let sqlres2 = await dbs.Run(sql2);
     if(sqlres.success && sqlres2.success){
         resp.json({ 'success': true });

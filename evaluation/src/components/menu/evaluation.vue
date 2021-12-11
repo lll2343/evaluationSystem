@@ -76,6 +76,7 @@ import ass02 from "../GBA/ass02.vue";
 import ass03 from "../GBA/ass03.vue";
 import animal from "../GBA/animal/myanimal.vue";
 import result from "../GBA/results.vue";
+import raven from "../GBA/raven/Raven.vue"
 
 export default {
   name: "evaluation",
@@ -99,6 +100,7 @@ export default {
     ass02,
     ass03,
     animal,
+    raven,
     result,
   },
 
@@ -165,22 +167,22 @@ export default {
   },
   mounted: function () {
     console.log("url", this.url);
-    // this.$axios
-    //   .post(this.url + "access/begin", {})
-    //   .then((response) => {
-    //     if (response.data.msg == "您尚未登录") {
-    //       this.open1(response.data.msg, response.data.type);
-    //       this.pos = 0;
-    //       this.isLogin = false;
-    //     } else {
-    //       (this.form.mail = response.data.mail),
-    //         (this.pos = response.data.process);
-    //       this.isLogin = true;
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     this.open1("错误，请重试" + err, "error");
-    //   });
+    this.$axios
+      .post(this.url + "access/begin", {})
+      .then((response) => {
+        if (response.data.msg == "您尚未登录") {
+          this.open1(response.data.msg, response.data.type);
+          this.pos = 0;
+          this.isLogin = false;
+        } else {
+          (this.form.mail = response.data.mail),
+            (this.pos = response.data.process);
+          this.isLogin = true;
+        }
+      })
+      .catch((err) => {
+        this.open1("错误，请重试" + err, "error");
+      });
   },
 };
 </script>

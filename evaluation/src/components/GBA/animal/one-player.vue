@@ -8,7 +8,6 @@
     </div>
     <div class="star"><i class="el-icon-star-off"></i>×{{player.star}}</div>
   </div>
-
 </template>
 
 

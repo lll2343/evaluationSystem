@@ -944,10 +944,6 @@ export default {
   padding: 30px;
 }
 
-.result-show {
-  // padding-top: 40px;
-}
-
 .result-show-desc {
   font-size: 1.6em;
 }
@@ -986,8 +982,6 @@ export default {
   .left {
     font-size: 1.1em;
     font-weight: 600;
-  }
-  .right {
   }
 }
 
