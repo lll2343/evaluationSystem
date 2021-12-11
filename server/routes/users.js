@@ -96,6 +96,7 @@ router.post('/reg', async (req, resp) => {
   }
 })
 
+
 // 注册发送验证码
 router.post('/email', async (req, resp) => {
   let { mail } = req.body;

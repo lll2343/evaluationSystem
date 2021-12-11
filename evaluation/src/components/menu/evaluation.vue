@@ -64,7 +64,7 @@
       <animal @nextAss="nextAss"></animal>
     </div>
     <div v-else-if="pos == 100">
-      <result></result>
+      <result ref="theend"></result>
     </div>
   </div>
 </template>
@@ -76,7 +76,7 @@ import ass02 from "../GBA/ass02.vue";
 import ass03 from "../GBA/ass03.vue";
 import animal from "../GBA/animal/myanimal.vue";
 import result from "../GBA/results.vue";
-import raven from "../GBA/raven/Raven.vue"
+import raven from "../GBA/raven/Raven.vue";
 
 export default {
   name: "evaluation",
@@ -124,8 +124,11 @@ export default {
         }, 3000);
       } else {
         this.pos = this.pos + 1;
-        if(this.pos == 6){
+        console.log(this.pos)
+        if (this.pos == 6) {
           this.pos = 100;
+          console.log('结束')
+          // this.$refs.theend.postCalc();
         }
       }
     },

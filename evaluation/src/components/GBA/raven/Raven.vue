@@ -35,11 +35,23 @@
       </div>
       <div class="save-btn" @click="saveCurrent()">保存进度</div>
     </div>
+    <div class="getAge" v-else-if="page == 2">
+      <div class="desc">您的年龄</div>
+      <div class="block">
+        <el-date-picker
+          v-model="birth"
+          type="datetime"
+          placeholder="选择出生日期"
+        >
+        </el-date-picker>
+      </div>
+      <el-button @click="getResult()"> 获取结果 </el-button>
+    </div>
     <div class="result" v-else>
       <div class="result-title">测评结束</div>
       <div class="result-show">
         <div class="result-show-desc">您的分数为</div>
-        <div class="result-show-num">{{ rightCount }}</div>
+        <div class="result-show-num">{{ score }}</div>
       </div>
       <div class="reports">
         <div class="card">
@@ -58,12 +70,12 @@
               <div class="right">{{ totalTime }}秒</div>
             </div>
             <div class="item">
-              <div class="left">性别</div>
-              <div class="right">{{ sex }}</div>
-            </div>
-            <div class="item">
               <div class="left">年龄</div>
               <div class="right">{{ age }}岁</div>
+            </div>
+            <div class="item">
+              <div class="left">水平</div>
+              <div class="right">{{ level }}</div>
             </div>
           </el-card>
         </div>
@@ -710,15 +722,18 @@ export default {
       total: questionUrl.length,
       current: 0,
       clickAble: true,
-      page: 0,
+      page: 2,
+      birth: 0,
+      score: 0,
       title: "说明",
       baseUrl: "./../../../../static/raven/",
       questionUrl: questionUrl,
       choiceUrl: choiceUrl,
       answerList: answerList,
       rightList: "",
-      rightCount: 0,
+      rightCount: 53,
       time: "20",
+      level: '',
       desc: `本内容参照瑞文测试
       <br/>你需要从下面选项中选择出最符合上图所缺失的图片
       <br/>
@@ -857,6 +872,36 @@ export default {
           this.open1("错误，请重试" + err, "error");
         });
     },
+
+    /**
+     * 获取结果
+     */
+    getResult: function () {
+      if(this.birth == ""){
+         this.open1("生日必填内容", "error");
+      } else {
+         this.$axios
+        .post(this.url + "raven/getscore", {
+          save: this.total,
+          time: this.totalTime,
+          testList: this.rightList,
+          rightCount: this.rightCount,
+          birth: this.birth
+        })
+        .then((response) => {
+          if (response.data.success) {
+            this.page = 3;
+            this.score = response.data.score
+            this.level = response.data.level
+          } else {
+            this.open1("失败", "error");
+          }
+        })
+        .catch((err) => {
+          this.open1("错误，请重试" + err, "error");
+        });
+      }
+    },
   },
 
   mounted: function () {
@@ -951,7 +996,19 @@ export default {
 .result-show-num {
   padding: 10px;
   font-size: 3em;
-  color: #4ec9b0;
+  color: #6b5ef7;
+}
+
+.getAge {
+  .desc {
+    padding-top: 120px;
+    color: #4ec9b0;
+    font-size: 2em;
+    padding-bottom: 10px;
+  }
+  .block {
+    margin: 50px 0;
+  }
 }
 
 .save-btn {

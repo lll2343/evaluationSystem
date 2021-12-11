@@ -45,6 +45,7 @@ router.post('/login', async (req, resp) => {
     }
 })
 
+
 // 管理员登出
 router.post('/loginout', async (req, resp) => {
     console.log('session',req.session);
@@ -52,7 +53,6 @@ router.post('/loginout', async (req, resp) => {
     req.session.name = null;
     resp.json({ 'msg': '您已退出登录', 'type': 'info' });
 })
-
 
 
 module.exports = router;

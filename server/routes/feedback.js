@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const dbs = require('./../db/dbs');
 
+
 router.post('/',async(req,resp)=>{
     let {mail,content} = req.body;
     let sql = `insert into feedback(mail,content) values ('${mail}','${content}')`;

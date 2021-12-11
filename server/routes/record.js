@@ -1,3 +1,4 @@
+const { response } = require('express');
 const express = require('express');
 const router = express.Router();
 const dbs = require('./../db/dbs');
@@ -16,7 +17,6 @@ const checkLogin = (req, resp, next) => {
     }
 }
 
-// router.post('/', checkLogin);
 
 /**
  * @function query 查询用户列表
@@ -48,7 +48,6 @@ router.post('/query', async (req, resp) => {
 })
 
 
-
 /**
  * @function detail 查询详细的用户信息
  */
@@ -56,18 +55,47 @@ router.post('/detail', async (req, resp) => {
     console.log('详细用户信息');
     let { mail } = req.body;
 
-    let sql = ` select username,birth,marjor,process from users where mail='${mail}'; `;
+    let sql = ` select username,birth,marjor,process,ravenScore
+        from users where mail='${mail}'; `;
     console.log(sql);
-
     let sqlres = await dbs.QueryOne(sql);
     console.log(sqlres);
-
-    resp.json({
-        "username":sqlres.username,
-        "birth":sqlres.birth,
-        "major":sqlres.marjor,
-        "process":sqlres.process
-    });
+    
+    let recordsres;
+    if(sqlres.process==100){
+        // 查询
+        sql = ` select remNum,hanoiSteps,hanoiSeconds,mathQue,cardStar 
+            from users records 
+            where mail = '${mail}'; `
+        recordsres = await dbs.QueryOne(sql);
+        let mathQue = 0;
+        for(let i=0;i<recordsres.mathQue.length;i++){
+            if(recordsres.mathQue[i] == '1'){
+                mathQue += 1;
+            }
+        }
+        resp.json({
+            "username":sqlres.username,
+            "birth":sqlres.birth,
+            "major":sqlres.marjor,
+            "process":sqlres.process,
+            "ravenScore": sqlres.ravenScore,
+           
+            "remNum": recordsres.remNum,
+            "hanoiSteps": recordsres.hanoiSteps,
+            "hanoiSeconds": recordsres.hanoiSeconds,
+            "mathQue": mathQue,
+            "cardStar": response.cardStar
+        });
+    } else {
+        resp.json({
+            "username":sqlres.username,
+            "birth":sqlres.birth,
+            "major":sqlres.marjor,
+            "process":sqlres.process,
+            "ravenScore": sqlres.ravenScore
+        });
+    }  
 })
 
 

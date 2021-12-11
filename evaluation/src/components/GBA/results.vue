@@ -50,11 +50,12 @@ export default {
   name: "assresult",
   data: function () {
     return {
-      mail: "2281250383@qq.com",
-      username: "lyz",
-      birth: "2000-11-14",
-      major: "计算机",
-      score: 80,
+      mail: "",
+      username: "",
+      birth: "",
+      major: "",
+      score: 0,
+      url: this.Common.url,
     };
   },
   components: {
@@ -67,8 +68,27 @@ export default {
     backToIndex: function () {
       this.$router.push({ path: "/" });
     },
+    postCalc: function(){
+      console.log('执行到这')
+      this.$axios
+        .post(this.url + "access/score", {
+        })
+        .then((response) => {
+          this.mail = response.data.mail;
+          this.username = response.data.username;
+          this.birth = response.data.birth;
+          this.major = response.data.major;
+          this.score = response.data.score;
+        })
+        .catch((err) => {
+          this.open1("错误，请重试" + err, "error");
+        });
+    }
   },
-  mounted: function () {},
+  mounted: function () {
+    this.postCalc();
+  },
+  
 };
 </script>
 

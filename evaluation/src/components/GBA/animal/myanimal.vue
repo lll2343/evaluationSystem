@@ -201,12 +201,20 @@ export default {
       battleIndex: -1, // 触发面板
       nowPlayer: 0,
       willPlay: "",
+      url: this.Common.url,
     };
   },
   components: {
     onePlayer,
   },
   methods: {
+    open1: function (msg, type) {
+      this.$message({
+        showClose: true,
+        message: msg,
+        type: type,
+      });
+    },
     nextAss: function () {
       this.$emit("nextAss");
     },
@@ -250,7 +258,7 @@ export default {
         this.battleIndex = -1;
         this.willPlay = "";
         if (this.player0.cardNumber() === 0) {
-          this.scene = 7;
+          this.postData();
           console.log("游戏结束");
         }
       }, 2000);
@@ -283,6 +291,22 @@ export default {
               </h1>
               <h1 class='inline-h'>结果为 <span style="padding-left:5px;color:green">${result}</span></h1>`,
       });
+    },
+    postData: function () {
+      this.$axios
+        .post(this.url + "access/card", {
+          star: this.player0.star,
+        })
+        .then((response) => {
+          if (response.data.success) {
+            this.scene = 7;
+          } else {
+            this.open1("错误，请重试" + err, "error");
+          }
+        })
+        .catch((err) => {
+          this.open1("错误，请重试" + err, "error");
+        });
     },
   },
 };

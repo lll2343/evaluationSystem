@@ -30,16 +30,24 @@
         <el-tag size="small" type="info">{{ major }}</el-tag>
       </el-descriptions-item>
       <el-descriptions-item>
-        <template slot="label">
-        </template>
+        <template slot="label"> </template>
       </el-descriptions-item>
-      <el-descriptions-item>
+      <el-descriptions-item v-if="isScore == 0">
         <template slot="label">
           <i class="el-icon-tickets"></i>
           测评分数
         </template>
         <span v-if="score != 0">{{ score }}</span>
         <el-tag size="small" type="danger" v-else>未测评</el-tag>
+      </el-descriptions-item>
+      <el-descriptions-item v-else>
+        <template slot="label">
+          <i class="el-icon-tickets"></i>
+          测评过程
+        </template>
+        <el-tag :type="getTagType(score)">{{
+                getTagContent(score)
+              }}</el-tag>
       </el-descriptions-item>
     </el-descriptions>
   </div>
@@ -55,10 +63,30 @@ export default {
     username: { type: String, default: "" },
     mail: { type: String, default: "" },
     birth: { type: String, default: "" },
-    major: { type: Array, default: "" },
+    major: { type: String, default: "" },
     score: { type: Number, default: 0 },
+    isScore: { type: Number, default: 0 },
   },
-  methods: {},
+  methods: {
+    getTagType: function (acc) {
+      if (acc == 0) {
+        return "warning";
+      } else if (acc >= 10) {
+        return "success";
+      } else {
+        return "info";
+      }
+    },
+    getTagContent(acc) {
+      if (acc == 0) {
+        return "未测评";
+      } else if (acc >= 10) {
+        return "完成测评";
+      } else {
+        return "部分测评";
+      }
+    },
+  },
 };
 </script>
 
@@ -66,4 +94,5 @@ export default {
 .main {
   width: 100%;
 }
+
 </style>
